@@ -2,12 +2,16 @@ class Board
 
     def initialize
         @grid = Array.new(11) { [] }
-        @grid.first = ["Goal for black pieces", :W, :W, :W, :W, :W]
-        @grid.last = ["Goal for white pieces", :B, :B, :B, :B, :B]
+        @grid[0] = ["Goal for black pieces", :W, :W, :W, :W, :W]
+        @grid[-1] = ["Goal for white pieces", :B, :B, :B, :B, :B]
     end
 
     def win?(mark)
-        @grid.flatten.include?(mark)
+        check = @grid[0] + @grid[-1]
+        (1..9).each do |i|
+            check << @grid[i][0] if !@grid[i].empty?
+        end
+        !check.include?(mark)
     end
 
     def game_over?
@@ -18,7 +22,7 @@ class Board
         total = 0
         4.times { total += rand(0..1) }
         num = 5 - total
-        puts "Move #{num} spaces"
+        #puts "Move #{num} spaces"
         num
     end
 
@@ -30,6 +34,10 @@ class Board
     end
 
     def valid_move?(index,color,amount)
+        if index == 0
+            return false if @grid[0].length == 1 
+            return @grid[amount][0] != color
+        end
         return false if @grid[index] == [] || @grid[index][0] != color #no piece there
         return true if index + amount > 9 #move is valid if it ends in or past the goal
         @grid[index + amount][0] != color #can't land on your own piece
@@ -40,16 +48,15 @@ class Board
     end
 
     def change_turns
-        @grid = grid.reverse
-        p @grid
+        @grid = @grid.reverse
     end
 
     def make_move(index,amount)
         if index == 0
-            moving_pieces = @grid[0].pop
+            moving_pieces = [@grid[0].pop]
         else
             moving_pieces = @grid[index]
-            @grid.index = []
+            @grid[index] = []
         end
         new_index = index + amount
         if new_index < 10
@@ -58,7 +65,21 @@ class Board
             survivors = moving_pieces.select { |ele| ele == moving_pieces[0] }
             @grid[0] += survivors
         end
-        change_turns
+    end
+
+    def print
+        system("clear")
+        @grid.reverse.each_with_index do |row,index|
+            p row
+        end
     end
 
 end
+
+#board_1 = Board.new
+#board_1.print
+#board_1.make_move(0,3)
+#board_1.make_move(0,2)
+#board_1.print
+#board_1.make_move(3,5)
+#board_1.print
