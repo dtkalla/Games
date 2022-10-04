@@ -1,8 +1,10 @@
 class Hand
     attr_reader :value, :hand
+    attr_accessor :rolls
 
     def initialize
         @hand = [1,2,3,4,5]
+        @rolls = 0
     end
 
     def roll(idxs = [0,1,2,3,4])

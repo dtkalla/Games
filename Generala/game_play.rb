@@ -39,19 +39,18 @@ class Game
 
     def turn
         print_game_state
-        i = 0
         indices = [0,1,2,3,4]
         hand = Hand.new
-        while i < 3
-            i += 1
+        while hand.rolls < 3
+            hand.rolls += 1
             hand.roll(indices)
             hand.print
-            if i != 3
+            if hand.rolls != 3
                 p 'Do you want to roll again?'
                 response = gets.chomp
             end
-            if response == 'n' || i == 3
-                i = 3
+            if response == 'n' || hand.rolls == 3
+                hand.rolls = 3
             else
                 p 'choose which dice to reroll, with indices separated by a space'
                 choice = gets.chomp.split(' ')
@@ -59,27 +58,26 @@ class Game
                 choice.each {|ele| indices << ele.to_i}
             end
         end
-        system("clear")
         p @current_player.score
         p "#{current_player.name}, choose how to score your roll"
         choice = get_choice
-        score(current_player,hand,choice,i)
+        score(current_player,hand,choice)
         p current_player.score
         switch_players!
     end
     
-    def score(player,hand,choice,i)
+    def score(player,hand,choice)
         nums = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis']
         if nums.include?(choice)
             score_num(player,hand,choice)
         elsif choice == 'escalera'
-            score_escalera(player,hand,choice,i)
+            score_escalera(player,hand,choice)
         elsif choice == 'full'
-            score_full(player,hand,choice,i)
+            score_full(player,hand,choice)
         elsif choice == 'poker'
-            score_poker(player,hand,choice,i)
+            score_poker(player,hand,choice)
         else
-            score_generala(player,hand,choice,i)
+            score_generala(player,hand,choice)
         end
         player.available.reject! {|ele| ele == choice}
         true
@@ -91,39 +89,39 @@ class Game
         player.score[choice] = points
     end
 
-    def score_escalera(player,hand,choice,i)
+    def score_escalera(player,hand,choice)
         if hand.sorted == [1,2,3,4,5] || hand.sorted == [2,3,4,5,6]
             player.score['escalera'] = 20
-            player.score['escalera'] += bonus if i == 1
+            player.score['escalera'] += bonus if hand.rolls == 1
         else
             player.score['escalera'] = 0
         end
     end
 
-    def score_full(player,hand,choice,i)
+    def score_full(player,hand,choice)
         hand_count = hand.count_nums
         if hand_count.has_value?(2) && hand_count.has_value?(3)
             player.score['full'] = 30
-            player.score['full'] += bonus if i == 1
+            player.score['full'] += bonus if hand.rolls == 1
         else
             player.score['full'] = 0
         end
     end
 
-    def score_poker(player,hand,choice,i)
+    def score_poker(player,hand,choice)
         hand_count = hand.count_nums
         if hand_count.has_value?(4)
             player.score['poker'] = 40
-            player.score['poker'] += @bonus if i == 1
+            player.score['poker'] += @bonus if hand.rolls == 1
         else
             player.score['poker'] = 0
         end
     end
 
-    def score_generala(player,hand,choice,i)
+    def score_generala(player,hand,choice)
         hand_count = hand.count_nums
         if hand_count.has_value?(5)
-            if i == 1
+            if hand.rolls == 1
                 p player.name + " wins the game!"
                 return
             end
