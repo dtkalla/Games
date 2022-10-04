@@ -2,10 +2,10 @@ class Hand
     attr_reader :value, :hand
 
     def initialize
-        @hand = Array.new(5) {|die| rand(1..6)}
+        @hand = [1,2,3,4,5]
     end
 
-    def roll(idxs)
+    def roll(idxs = [0,1,2,3,4])
         idxs.each {|idx| @hand[idx] = rand(1..6)}
         @hand
     end

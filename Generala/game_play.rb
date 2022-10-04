@@ -2,12 +2,6 @@ require_relative "hand.rb"
 require_relative "player.rb"
 require "byebug"
 
-class Array
-
-
-
-end
-
 class Game
     attr_reader :players, :current_player, :bonus
 
@@ -21,11 +15,30 @@ class Game
         @bonus = 5
     end
 
-    def turn
-        puts
-        p current_player.name
+    def print_game_state
+        system("clear")
+        p "#{current_player.name}'s turn.  Here are his points so far:"
         p current_player.score
+        p "These are the options avaliable:"
         p current_player.available
+    end
+
+    def get_choice
+        choice = gets.chomp
+        until current_player.available.include?(choice)
+            p 'Please enter a valid choice.'
+            choice = gets.chomp
+        end
+        choice
+    end
+
+    def switch_players!
+        @players = @players[1..-1] + [@current_player]
+        @current_player = @players[0]
+    end
+
+    def turn
+        print_game_state
         i = 0
         indices = [0,1,2,3,4]
         hand = Hand.new
@@ -36,22 +49,8 @@ class Game
             if i != 3
                 p 'Do you want to roll again?'
                 response = gets.chomp
-            else
-                response = 'n'
             end
-            if response == 'n'
-                p current_player.available
-                p 'Choose how to score your roll'
-                choice = gets.chomp
-                while !current_player.available.include?(choice)
-                    p 'Please enter a valid choice.'
-                    choice = gets.chomp
-                end
-                score(current_player,hand,choice,i)
-                p current_player.score
-                @players = @players[1..-1]
-                @players << current_player
-                @current_player = @players[0]
+            if response == 'n' || i == 3
                 i = 3
             else
                 p 'choose which dice to reroll, with indices separated by a space'
@@ -60,7 +59,13 @@ class Game
                 choice.each {|ele| indices << ele.to_i}
             end
         end
-        true
+        system("clear")
+        p @current_player.score
+        p "#{current_player.name}, choose how to score your roll"
+        choice = get_choice
+        score(current_player,hand,choice,i)
+        p current_player.score
+        switch_players!
     end
     
     def score(player,hand,choice,i)
@@ -76,9 +81,7 @@ class Game
         else
             score_generala(player,hand,choice,i)
         end
-        new_arr = []
-        player.available.each {|ele| new_arr << ele if ele != choice}
-        player.available = new_arr
+        player.available.reject! {|ele| ele == choice}
         true
     end
 
@@ -131,25 +134,30 @@ class Game
     end
 
     def done?
-        @players.each {|player| return false if player.available != []}
-        true
+        @players.all? {|player| player.available == []}
     end
 
     def play
-        while !done?
+        until done?
             turn
         end
         players.each do |player|
             total_score = 0
             player.score.each_value {|v| total_score += v}
-            p player.name + ' got ' + total_score.to_s + ' points!'
+            p "#{player.name} tiene #{total_score.to_s} puntos!"
         end
-
     end
+
 end
 
 
 game = Game.new("Daniel","Pia")
+game.play
+
+
+#Various tests, all passing
+
+#p game.players
 #p1 = game.players[0]
 #p2 = game.players[1]
 #game.score(p1,[1,4,2,1,1],'uno')
@@ -165,7 +173,6 @@ game = Game.new("Daniel","Pia")
 #game.turn
 #p p1.score
 #p p1.available
-game.play
 #p game.score(p1,[1,1,1,2,2],'full',1)
 #p p1.score
 #p game.score(p1,[1,1,1,2,2],'full',2)
