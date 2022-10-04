@@ -9,7 +9,7 @@ class Array
 end
 
 class Game
-    attr_reader :players, :current_player
+    attr_reader :players, :current_player, :bonus
 
     def initialize(*names)
         @players = []
@@ -18,6 +18,7 @@ class Game
             @players << player
         end
         @current_player = @players[0]
+        @bonus = 5
     end
 
     def turn
@@ -63,50 +64,70 @@ class Game
     end
     
     def score(player,hand,choice,i)
-        nums = {'uno' => 1, 'dos' => 2, 'tres' => 3, 'cuatro' => 4, 'cinco' => 5, 'seis' => 6}
-        if nums.has_key?(choice)
-            how_many = 0
-            points = nums[choice] * hand.count_nums[nums[choice]]
-            player.score[choice] = points
+        nums = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis']
+        if nums.include?(choice)
+            score_num(player,hand,choice)
         elsif choice == 'escalera'
-            if hand.sorted == [1,2,3,4,5] || hand.sorted == [2,3,4,5,6]
-                player.score['escalera'] = 20
-                player.score['escalera'] = 25 if i == 1
-            else
-                player.score['escalera'] = 0
-            end
+            score_escalera(player,hand,choice,i)
+        elsif choice == 'full'
+            score_full(player,hand,choice,i)
+        elsif choice == 'poker'
+            score_poker(player,hand,choice,i)
         else
-            hand_count = hand.count_nums
-            if choice == 'full'
-                if hand_count.has_value?(2) && hand_count.has_value?(3)
-                    player.score['full'] = 30
-                    player.score['full'] = 35 if i == 1
-                else
-                    player.score['full'] = 0
-                end
-            elsif choice == 'poker'
-                if hand_count.has_value?(4)
-                    player.score['poker'] = 40
-                    player.score['poker'] = 45 if i == 1
-                else
-                    player.score['poker'] = 0
-                end
-            else
-                if hand_count.has_value?(5)
-                    if i == 1
-                        p player.name + " wins the game!"
-                        return
-                    end
-                    player.score['generala'] = 50
-                else
-                    player.score['generala'] = 0
-                end
-            end
+            score_generala(player,hand,choice,i)
         end
         new_arr = []
         player.available.each {|ele| new_arr << ele if ele != choice}
         player.available = new_arr
         true
+    end
+
+    def score_num(player,hand,choice)
+        nums = {'uno' => 1, 'dos' => 2, 'tres' => 3, 'cuatro' => 4, 'cinco' => 5, 'seis' => 6}
+        points = nums[choice] * hand.count_nums[nums[choice]]
+        player.score[choice] = points
+    end
+
+    def score_escalera(player,hand,choice,i)
+        if hand.sorted == [1,2,3,4,5] || hand.sorted == [2,3,4,5,6]
+            player.score['escalera'] = 20
+            player.score['escalera'] += bonus if i == 1
+        else
+            player.score['escalera'] = 0
+        end
+    end
+
+    def score_full(player,hand,choice,i)
+        hand_count = hand.count_nums
+        if hand_count.has_value?(2) && hand_count.has_value?(3)
+            player.score['full'] = 30
+            player.score['full'] += bonus if i == 1
+        else
+            player.score['full'] = 0
+        end
+    end
+
+    def score_poker(player,hand,choice,i)
+        hand_count = hand.count_nums
+        if hand_count.has_value?(4)
+            player.score['poker'] = 40
+            player.score['poker'] += @bonus if i == 1
+        else
+            player.score['poker'] = 0
+        end
+    end
+
+    def score_generala(player,hand,choice,i)
+        hand_count = hand.count_nums
+        if hand_count.has_value?(5)
+            if i == 1
+                p player.name + " wins the game!"
+                return
+            end
+            player.score['generala'] = 50
+        else
+            player.score['generala'] = 0
+        end
     end
 
     def done?
