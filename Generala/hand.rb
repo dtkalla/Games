@@ -27,10 +27,3 @@ class Hand
     end
 
 end
-
-#hand = Hand.new
-#hand.print
-#p hand.count_nums
-#hand.roll([0,3])
-#hand.print
-#p hand.count

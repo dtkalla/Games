@@ -1,5 +1,4 @@
-require_relative "hand.rb"
-require_relative "player.rb"
+require_relative "player"
 require "byebug"
 
 class Game
@@ -151,33 +150,3 @@ end
 
 game = Game.new("Daniel","Pia")
 game.play
-
-
-#Various tests, all passing
-
-#p game.players
-#p1 = game.players[0]
-#p2 = game.players[1]
-#game.score(p1,[1,4,2,1,1],'uno')
-#p p1.score
-#p p1.available
-#game.score(p1,[1,3,4,2,5],'escalera')
-#p p1.score
-#p p1.available
-#game.score(p1,[1,3,4,2,5],'generala')
-#p p1.score
-#p p1.available
-#game.score(p1,[1,2,2,1,1],'full')
-#game.turn
-#p p1.score
-#p p1.available
-#p game.score(p1,[1,1,1,2,2],'full',1)
-#p p1.score
-#p game.score(p1,[1,1,1,2,2],'full',2)
-#p p1.score
-#p game.score(p1,[1,2,3,4,5],'generala',1)
-#p p1.score
-#p game.score(p1,[5,5,5,5,5],'generala',1)
-
-
-

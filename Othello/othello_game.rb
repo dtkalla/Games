@@ -1,6 +1,4 @@
-require_relative "player.rb"
-require_relative "board.rb"
-
+require_relative "player"
 
 class Othello
     attr_reader :board, :player_1, :player_2, :players, :current_player
@@ -44,6 +42,4 @@ class Othello
 end
 
 game = Othello.new
-
-#p game
 game.play_othello

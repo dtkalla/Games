@@ -22,7 +22,6 @@ class Board
         total = 0
         4.times { total += rand(0..1) }
         num = 5 - total
-        #puts "Move #{num} spaces"
         num
     end
 
@@ -75,11 +74,3 @@ class Board
     end
 
 end
-
-#board_1 = Board.new
-#board_1.print
-#board_1.make_move(0,3)
-#board_1.make_move(0,2)
-#board_1.print
-#board_1.make_move(3,5)
-#board_1.print

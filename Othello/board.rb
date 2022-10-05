@@ -1,4 +1,4 @@
-require_relative "player.rb"
+require_relative "player"
 
 class Board
 
@@ -7,9 +7,7 @@ class Board
         @board[3][3] = :B
         @board[3][4] = :W
         @board[4][3] = :W
-        @board[4][4] = :B
-#        @board[0][6] = :W
-#        @board[0][5] = :B        
+        @board[4][4] = :B    
     end
 
     def print
@@ -80,11 +78,6 @@ class Board
         arr
     end
 
-#    def []=(pos,value)
-#        row,col = pos
-#        @board[row][col] = value
-#    end
-
     def score(player)
         player.score = 0
         (0..7).each do |i|
@@ -99,69 +92,3 @@ class Board
     end
 
 end
-
-
-
-"""
-board_1 = Board.new
-board_1.print
-
-
-p board_1.get_lines([3,3])
-p board_1.is_valid?([3,2],:W)
-p board_1.is_valid?([3,2],:B)
-puts
-p board_1.get_lines([3,2])
-p board_1.valid_indices([3,2],:W)
-
-board_1.place([3,2],:W)
-board_1.print
-puts
-
-board_1.place([4,2],:B)
-board_1.print
-puts
-
-p board_1.get_lines([5,4])
-p board_1.valid_indices([5,4],:W)
-board_1.place([5,4],:W)
-board_1.print
-puts
-
-board_1.place([4,5],:B)
-board_1.print
-puts
-
-board_1.place([5,1],:W)
-board_1.print
-puts
-
-board_1.place([4,1],:B)
-board_1.print
-puts
-
-board_1.place([5,0],:W)
-board_1.print
-puts
-
-board_1.place([6,0],:B)
-board_1.print
-puts
-
-board_1.place([7,0],:W)
-board_1.print
-puts
-
-p board_1.get_lines([3,1])
-p board_1.valid_indices([3,1],:B)
-board_1.place([3,1],:B)
-board_1.print
-puts
-
-p1 = Player.new(:B)
-p2 = Player.new(:W)
-board_1.score(p1)
-board_1.score(p2)
-p p1.score
-p p2.score
-"""

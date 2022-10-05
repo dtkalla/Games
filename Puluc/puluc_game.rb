@@ -1,5 +1,5 @@
-require_relative "board.rb"
-require_relative "player.rb"
+require_relative "board"
+require_relative "player"
 
 class PulucGame
 

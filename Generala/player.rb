@@ -1,4 +1,4 @@
-require_relative "hand.rb"
+require_relative "hand"
 
 class Player
     attr_reader :name,:score,:available
@@ -17,12 +17,3 @@ class Player
     end
 
 end
-
-#player_1 = Player.new("Daniel")
-
-#p player_1
-
-#player_1['uno'] = 3
-#p player_1.score
-
-
