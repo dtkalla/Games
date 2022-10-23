@@ -8,6 +8,7 @@ class Game
         @player_1 = Player.new(player_1_name,@deck)
         @player_2 = Player.new(player_2_name,@deck)
         @current_player = @player_1
+        system("clear")
     end
     
     def game_over?
@@ -24,24 +25,23 @@ class Game
             play_card(new_card)
             switch_players!
             @deck.populate if @deck.empty?
+            system("clear")
         end
         switch_players!
         puts "#{@current_player.name} is the winner!  Congratulations!"
-        @current_player.render
+        puts "#{@player_1.name}'s hand:"
+        @player_1.render
+        puts "#{@player_2.name}'s hand:"
+        @player_2.render
     end
 
     def get_card
-        @current_player.render
         puts "Your turn, #{@current_player.name}"
         puts "The top card of the discard pile is #{@discard_pile[-1].number}."
+        @current_player.render
         puts "Would you like to draw from the deck(1) or discard pile(2)?"
         choice = gets.chomp
-        if choice == "2"
-            card = @discard_pile.pop
-        else 
-            card = @deck.draw
-        end
-        card
+        choice == "2" ? card = @discard_pile.pop : @deck.draw
     end
 
     def play_card(card)
@@ -63,5 +63,5 @@ class Game
 
 end
 
-game = Game.new("Daniel","Pia")
+game = Game.new("Daniel","Anne")
 game.play

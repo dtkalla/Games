@@ -54,7 +54,7 @@ class Game
                 p 'choose which dice to reroll, with indices separated by a space'
                 choice = gets.chomp.split(' ')
                 indices = []
-                choice.each {|ele| indices << ele.to_i}
+                choice.each { |ele| indices << ele.to_i }
             end
         end
         p @current_player.score
@@ -78,7 +78,7 @@ class Game
         else
             score_generala(player,hand,choice)
         end
-        player.available.reject! {|ele| ele == choice}
+        player.available.reject! { |ele| ele == choice }
         true
     end
 
@@ -89,9 +89,9 @@ class Game
     end
 
     def score_escalera(player,hand,choice)
-        if hand.sorted == [1,2,3,4,5] || hand.sorted == [2,3,4,5,6]
+        if hand.sorted in [[1,2,3,4,5],[2,3,4,5,6]]
             player.score['escalera'] = 20
-            player.score['escalera'] += bonus if hand.rolls == 1
+            player.score['escalera'] += @bonus if hand.rolls == 1
         else
             player.score['escalera'] = 0
         end
@@ -101,7 +101,7 @@ class Game
         hand_count = hand.count_nums
         if hand_count.has_value?(2) && hand_count.has_value?(3)
             player.score['full'] = 30
-            player.score['full'] += bonus if hand.rolls == 1
+            player.score['full'] += @bonus if hand.rolls == 1
         else
             player.score['full'] = 0
         end
@@ -131,7 +131,7 @@ class Game
     end
 
     def done?
-        @players.all? {|player| player.available == []}
+        @players.all? { |player| player.available == [] }
     end
 
     def play
@@ -140,8 +140,8 @@ class Game
         end
         players.each do |player|
             total_score = 0
-            player.score.each_value {|v| total_score += v}
-            p "#{player.name} tiene #{total_score.to_s} puntos!"
+            player.score.each_value { |v| total_score += v }
+            p "#{player.name} has #{total_score.to_s} points!"
         end
     end
 

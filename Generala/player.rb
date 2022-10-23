@@ -9,7 +9,7 @@ class Player
         @available = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis',
         'escalera', 'full', 'poker', 'generala']
         @score = Hash.new
-        @available.each {|ele| @score[ele] = :_}
+        @available.each { |ele| @score[ele] = :_ }
     end
 
     def []=(key,num)

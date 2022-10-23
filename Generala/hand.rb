@@ -8,7 +8,7 @@ class Hand
     end
 
     def roll(idxs = [0,1,2,3,4])
-        idxs.each {|idx| @hand[idx] = rand(1..6)}
+        idxs.each { |idx| @hand[idx] = rand(1..6) }
         @hand
     end
 
@@ -18,7 +18,7 @@ class Hand
 
     def count_nums
         count = Hash.new(0)
-        @hand.each {|die| count[die] += 1}
+        @hand.each { |die| count[die] += 1 }
         count
     end
 

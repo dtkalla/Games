@@ -1,4 +1,5 @@
 require_relative "deck"
+require "colorize"
 
 class Player
     attr_reader :name
@@ -10,8 +11,22 @@ class Player
 
     def render
         card_nums = []
-        @rack.each { |card| card_nums << card.number.to_s}
+        colorize
+        @rack.each { |card| card_nums << card.print }
         puts card_nums.join(' ')
+    end
+
+    def colorize
+        @rack.each_with_index do |card,index|
+            card.color = :red
+            if index == 0
+                card.color = :blue if card.number < @rack[index+1].number
+            elsif index == 9
+                card.color = :blue if card.number > @rack[index-1].number
+            else
+                card.color = :blue if card.number < @rack[index+1].number && card.number > @rack[index-1].number
+            end
+        end
     end
 
     def won?

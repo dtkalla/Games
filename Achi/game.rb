@@ -14,7 +14,35 @@ class Game
     end
 
     def placement_turn
-
+        @board.render
+        puts "Please enter a position number to place your piece."
+        pos = gets.chomp.to_i
+        # until @board.empty?(pos)
+        #     pos = gets.chomp.to_i
+        # end
+        @board.place_piece(@current_player,pos)
+        switch_turns!
     end
 
+    def play_game
+        8.times {placement_turn}
+        until board.game_over?
+            take_turn
+        end
+        switch_turns!
+        @board.render
+        puts "#{@current_player.name} is the winner!"
+    end
+
+    def take_turn
+        @board.render
+        puts "These are the possible moves.  Please select the place to move your piece from."
+        puts @board.possible_moves(@current_player.color)
+        pos = gets.chomp.to_i
+        @board.make_move(@current_player.color)
+        switch_turns!
+    end
 end
+
+game = Game.new("Daniel","Marion")
+game.play_game
