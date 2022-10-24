@@ -4,12 +4,13 @@ class Board
         @grid = Array.new(11) { [] }
         @grid[0] = ["Goal for black pieces", :W, :W, :W, :W, :W]
         @grid[-1] = ["Goal for white pieces", :B, :B, :B, :B, :B]
+        @num_sticks = 4
     end
 
-    def win?(mark)
+    def win?(mark) #should this be lose? instead of win? ?
         check = @grid[0] + @grid[-1]
         (1..9).each do |i|
-            check << @grid[i][0] if !@grid[i].empty?
+            check << @grid[i][0] unless @grid[i].empty?
         end
         !check.include?(mark)
     end
@@ -20,7 +21,7 @@ class Board
 
     def roll_dice
         total = 0
-        4.times { total += rand(0..1) }
+        @num_sticks.times { total += rand(0..1) }
         num = 5 - total
         num
     end
