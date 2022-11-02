@@ -1,4 +1,4 @@
-require_relative "player"
+require_relative "board"
 
 class Othello
     attr_reader :board, :player_1, :player_2, :players, :current_player
