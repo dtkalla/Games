@@ -1,8 +1,8 @@
 require_relative "hand"
 
 class Player
-    attr_reader :name,:score,:available
-    attr_writer :available
+    attr_reader :name,:score
+    attr_accessor :available
 
     def initialize(name)
         @name = name

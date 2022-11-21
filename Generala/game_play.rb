@@ -32,7 +32,7 @@ class Game
     end
 
     def switch_players!
-        @players = @players[1..-1] + [@current_player]
+        @players << @players.shift
         @current_player = @players[0]
     end
 
@@ -40,7 +40,8 @@ class Game
         print_game_state
         indices = [0,1,2,3,4]
         hand = Hand.new
-        while hand.rolls < 3
+        done = false
+        while done == false
             hand.rolls += 1
             hand.roll(indices)
             hand.print
@@ -49,7 +50,7 @@ class Game
                 response = gets.chomp
             end
             if response == 'n' || hand.rolls == 3
-                hand.rolls = 3
+                done = true
             else
                 p 'choose which dice to reroll, with indices separated by a space'
                 choice = gets.chomp.split(' ')
