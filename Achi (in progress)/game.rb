@@ -26,7 +26,7 @@ class Game
 
     def play_game
         8.times {placement_turn}
-        until board.game_over?
+        until @board.game_over?
             take_turn
         end
         switch_turns!
