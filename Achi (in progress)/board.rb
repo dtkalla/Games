@@ -61,13 +61,12 @@ class Board
     def possible_moves(color)
         moves_hash = {1 => [2,4,5], 2 => [1,3,5], 3  => [2,5,6], 4 => [1,5,7],
         5 => [1,2,3,4,6,7,8,9],  6 => [3,5,9], 7 => [4,5,8], 8 => [5,7,9], 9 => [5,6,8] }
-        empty_spaces = (1..9).to_a.select { |pos| empty?(pos) }
+        empty_space = (1..9).to_a.select { |pos| empty?(pos) }
         current_spaces = (1..9).to_a.select do |pos|
             row,col = @conversion[pos]
-            @board[row][col].color == color
+            @grid[row][col].color == color
         end
-        possible_moves = []
-        
+        possible_moves = moves_hash[empty_space[0]].filter {|move| current_spaces.include?(move)}
     end
 
     # def placement_over?(color)
@@ -83,7 +82,7 @@ class Board
 
     def empty?(pos)
         row,col = @conversion[pos]
-        @board[row][col].color == :yellow
+        @grid[row][col].color == :yellow
     end
 
 end
