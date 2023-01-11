@@ -51,7 +51,7 @@ class Game
         until possible_moves.include?(pos)
             pos = gets.chomp.to_i
         end
-        @board.make_move(@current_player.color)
+        @board.make_move(@current_player.color,pos)
         switch_turns!
     end
 end
