@@ -30,4 +30,4 @@ The first game I write here, Generala, is essentially a variant of Yahtzee popul
 ```
 
 A sample round of the game is here: as you can see, it runs correctly and communicates the necessary information, but the UI is pretty ugly because I made no attempt at styling.
-![]('./images/generala_round.png')
+![](images/generala_round.png)
